@@ -1,0 +1,364 @@
+/* =========================================================================
+   DisasterOps — design tokens
+   Palette and type sampled directly from the project's own proposal
+   document (deep forest green, mint tint, warm off-black text, a single
+   classic serif typeface) rather than an invented "ops center" look.
+   Variable NAMES are kept stable even where their role shifted (e.g.
+   --ink-950 was a near-black dark-mode surface; it is now the brand's
+   deep green) so nothing referencing them inline needs to change.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* brand palette, sampled from the proposal PDF */
+  --brand-900: #143e31;   /* deep forest green -- headline boxes, primary buttons, topbar */
+  --brand-700: #1c4d3c;   /* lighter deep green -- hover states */
+  --brand-500: #147e52;   /* medium accent green -- links, focus, "why this plan" checks */
+  --mint-100: #f1f7f4;    /* pale mint tint -- card emphasis, table header rows */
+  --mint-50: #f8fbf9;     /* barely-there mint -- sidenav bg, zebra striping */
+
+  /* base palette (kept as --ink-*/--paper-* so existing inline JS styles
+     recolor automatically) */
+  --ink-950: #143e31;     /* now: brand deep green, used wherever a "dark surface" was */
+  --ink-900: #ffffff;     /* now: white card surface */
+  --ink-800: #eaf2ee;     /* now: light mint emphasis surface (chat bubbles etc) */
+  --ink-700: #dbe9e2;     /* now: slightly deeper mint, active nav */
+  --ink-600: #cddde5;
+  --ink-400: #5c6863;     /* muted body text (was light slate-blue) */
+  --ink-200: #2e3733;     /* strong body text on light surfaces */
+  --paper-0: #ffffff;     /* now: white / "text that sits on a dark surface" */
+  --paper-50: #ffffff;
+  --line: #dbe6e1;        /* sage-tinted light border */
+  --line-soft: rgba(20, 62, 49, 0.08);
+
+  /* urgency / status scale -- the one place color is allowed to shout */
+  --band-low: #147e52;
+  --band-moderate: #b8791f;
+  --band-high: #c9642c;
+  --band-very-high: #c14a29;
+  --band-critical: #b0202f;
+
+  --ok: #147e52;
+  --warn: #b8791f;
+  --danger: #b0202f;
+  --info: #3572a5;
+
+  --accent: #147e52;
+  --accent-soft: #4fa17c;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --font-display: 'Lora', 'IBM Plex Sans', Georgia, serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --shadow-card: 0 1px 2px rgba(20, 62, 49, 0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: #ffffff;
+  color: var(--ink-200);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+button, input, select, textarea { font-family: inherit; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; margin: 0; letter-spacing: -0.005em; color: var(--brand-900); }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); }
+
+/* ---------- app shell ---------------------------------------------------- */
+#app { min-height: 100vh; }
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+.shell-main {
+  flex: 1;
+  min-width: 0;
+  padding: 22px 28px 60px;
+  background: #ffffff;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--brand-700);
+  background: var(--brand-900);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.005em;
+  color: #ffffff;
+}
+.brand-mark {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: var(--mint-100);
+  color: var(--brand-900);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--mint-100); }
+.pill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: var(--mint-100);
+}
+.logout-link { color: var(--mint-100); text-decoration: none; border: 1px solid rgba(255,255,255,0.25); padding: 6px 12px; border-radius: var(--radius-sm); font-size: 13px; }
+.logout-link:hover { border-color: #ffffff; color: #ffffff; }
+
+.sidenav {
+  width: 208px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--line);
+  background: var(--mint-50);
+  padding: 18px 12px;
+  position: sticky;
+  top: 57px;
+  height: calc(100vh - 57px);
+  overflow-y: auto;
+}
+.sidenav a {
+  display: block;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-400);
+  text-decoration: none;
+  font-size: 13.5px;
+  margin-bottom: 2px;
+  border-left: 3px solid transparent;
+}
+.sidenav a:hover { background: var(--mint-100); color: var(--brand-900); }
+.sidenav a.active { background: var(--mint-100); color: var(--brand-900); font-weight: 600; border-left-color: var(--brand-500); }
+.sidenav .section-label {
+  font-size: 10.5px;
+  color: var(--ink-400);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 12px 6px;
+}
+
+/* ---------- cards / grid -------------------------------------------------- */
+.grid { display: grid; gap: 16px; }
+.card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+}
+.card-title {
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand-500);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+.stat-value { font-family: var(--font-display); font-size: 28px; font-weight: 700; line-height: 1; color: var(--brand-900); }
+.stat-label { color: var(--ink-400); font-size: 12.5px; margin-top: 6px; }
+
+/* ---------- urgency badges -------------------------------------------------- */
+.band-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.band-badge .dot { width: 7px; height: 7px; border-radius: 50%; }
+.band-LOW { background: rgba(20,126,82,0.12); color: var(--band-low); }
+.band-LOW .dot { background: var(--band-low); }
+.band-MODERATE { background: rgba(184,121,31,0.13); color: var(--band-moderate); }
+.band-MODERATE .dot { background: var(--band-moderate); }
+.band-HIGH { background: rgba(201,100,44,0.13); color: var(--band-high); }
+.band-HIGH .dot { background: var(--band-high); }
+.band-VERY_HIGH { background: rgba(193,74,41,0.15); color: var(--band-very-high); }
+.band-VERY_HIGH .dot { background: var(--band-very-high); }
+.band-CRITICAL { background: rgba(176,32,47,0.15); color: var(--band-critical); }
+.band-CRITICAL .dot { background: var(--band-critical); }
+
+/* ---------- tables / lists -------------------------------------------------- */
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; color: var(--brand-900); background: var(--mint-100); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+td { padding: 10px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr.row-link { cursor: pointer; }
+tr.row-link:hover { background: var(--mint-50); }
+
+.list-item { padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
+.list-item:last-child { border-bottom: none; }
+
+/* ---------- buttons -------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: var(--ink-200);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.btn:hover { border-color: var(--brand-500); color: var(--brand-900); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--brand-900); border-color: var(--brand-900); color: #ffffff; }
+.btn-primary:hover { background: var(--brand-700); border-color: var(--brand-700); color: #ffffff; }
+.btn-danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+.btn-danger:hover { background: rgba(176,32,47,0.08); }
+.btn-ghost { background: transparent; border-color: transparent; }
+.btn-block { width: 100%; }
+.btn-lg { padding: 16px 18px; font-size: 15.5px; border-radius: var(--radius-md); }
+
+/* ---------- forms -------------------------------------------------- */
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12.5px; color: var(--ink-400); margin-bottom: 6px; font-weight: 500; }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: var(--ink-200);
+  font-size: 14px;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--brand-500); outline-offset: 1px; border-color: var(--brand-500); }
+.field .hint { font-size: 11.5px; color: var(--ink-400); margin-top: 4px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ---------- misc -------------------------------------------------- */
+.muted { color: var(--ink-400); }
+.small { font-size: 12.5px; }
+.flex { display: flex; align-items: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+.mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+.divider { height: 1px; background: var(--line); margin: 16px 0; }
+.section-heading { font-size: 21px; margin-bottom: 4px; }
+.eyebrow { font-size: 12px; color: var(--brand-500); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 4px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--ink-400); }
+.toast-region { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--brand-500);
+  color: var(--ink-200);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  min-width: 240px;
+  box-shadow: 0 8px 24px rgba(20,62,49,0.16);
+  animation: toast-in .18s ease-out;
+}
+.toast.error { border-left-color: var(--danger); }
+.toast.success { border-left-color: var(--ok); }
+@keyframes toast-in { from { transform: translateY(6px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--line); border-top-color: var(--brand-500); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .sidenav { display: none; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .field-row { grid-template-columns: 1fr; }
+  .shell-main { padding: 16px; }
+}
+
+/* =========================================================================
+   Volunteer surface — bright, huge targets, minimal. Same brand palette,
+   just simpler and higher-contrast for a phone screen.
+   ========================================================================= */
+body.volunteer-mode { background: #ffffff; color: var(--ink-200); }
+.v-shell { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+.v-topbar {
+  padding: 18px 20px 14px;
+  background: var(--brand-900);
+  color: #ffffff;
+}
+.v-topbar .brand { color: #ffffff; }
+.v-main { flex: 1; padding: 18px 18px 40px; }
+.v-card {
+  background: var(--mint-50);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-card);
+}
+.v-btn {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  margin-bottom: 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--brand-900);
+  background: var(--brand-900);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.v-btn.secondary { background: #ffffff; color: var(--brand-900); border-color: var(--line); }
+.v-btn.critical { background: var(--band-critical); border-color: var(--band-critical); }
+.v-choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.v-choice {
+  padding: 20px 10px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--line);
+  background: #ffffff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-200);
+  cursor: pointer;
+}
+.v-choice.selected { border-color: var(--brand-900); background: var(--brand-900); color: #ffffff; }
+.v-label { font-size: 12.5px; color: var(--brand-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; font-weight: 600; }
+
+/* volunteer surface form fields -- already light, just keep them
+   consistent with the brand line/ink colors above */
+body.volunteer-mode .field label { color: var(--ink-400); }
+body.volunteer-mode .field input,
+body.volunteer-mode .field select,
+body.volunteer-mode .field textarea {
+  background: #ffffff;
+  color: var(--ink-200);
+  border: 1.5px solid var(--line);
+}
+body.volunteer-mode .field input:focus,
+body.volunteer-mode .field select:focus,
+body.volunteer-mode .field textarea:focus {
+  border-color: var(--brand-900);
+  outline-color: var(--brand-900);
+}
+body.volunteer-mode .field .hint { color: var(--ink-400); }
